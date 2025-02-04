@@ -314,10 +314,10 @@ MonoBehaviour:
   active: 1
   normalBias:
     m_OverrideState: 1
-    m_Value: 0.33
+    m_Value: 2
   viewBias:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1.37
   scaleBiasWithMinProbeDistance:
     m_OverrideState: 1
     m_Value: 0
