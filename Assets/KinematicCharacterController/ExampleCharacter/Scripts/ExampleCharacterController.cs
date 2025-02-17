@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController;
 using System;
+using UnityEngine.InputSystem;
 
 namespace KinematicCharacterController.Examples
 {
     public enum CharacterState
     {
         Default,
+    }
+    enum MoveState
+    {
+        Idle = 1,
+        Walk = 2,
+        SideWalk = 3,
+        Run = 4,
+        Jump = 5
     }
 
     public enum OrientationMethod
