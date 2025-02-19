@@ -7,16 +7,22 @@ public class CharacterScript : MonoBehaviour
     private Animator animator;
     private InputAction moveAction;
     private InputAction jumpAction;
+    private Vector3 playerVelocity;
+    private float jumpForce = 5f;
 
     private enum State
     {
         Idle = 0,
         Walk = 1,
-        Jump = 2
+        JumpStart = 2,
+        Jump = 3,
+        JumpFinish = 4
     }
 
     private bool isJumping = false;
-    private bool isGrounded = true; // Дополнительная проверка на землю
+    private bool isFalling = false;
+    private bool isGrounded = true;
+    private State moveState = State.Idle;
 
     void Awake()
     {
@@ -27,21 +33,29 @@ public class CharacterScript : MonoBehaviour
 
     void Update()
     {
-        if (jumpAction.ReadValue<float>() > 0f && isGrounded) 
+        if (jumpAction.ReadValue<float>() > 0f && isGrounded)
         {
-            SetMoveState(State.Jump);
+            SetMoveState(State.JumpStart);
             isJumping = true;
+            isGrounded = false;
+            playerVelocity.y = jumpForce;
         }
 
-        if (isJumping)
+        if (isJumping && IsJumpStartAnimationComplete())
         {
-            if (IsJumpingAnimationComplete()) 
-            {
-                isJumping = false;
-                TransitionToIdleOrWalk();
-            }
+            SetMoveState(State.Jump);
+            isJumping = false;
+            isFalling = true;
         }
-        else
+
+        if (isFalling && isGrounded)
+        {
+            playerVelocity.y = 0f;
+            SetMoveState(State.JumpFinish);
+            isFalling = false;
+        }
+
+        if (moveState == State.JumpFinish && IsJumpFinishAnimationComplete())
         {
             TransitionToIdleOrWalk();
         }
@@ -60,30 +74,50 @@ public class CharacterScript : MonoBehaviour
         }
     }
 
-    private bool IsJumpingAnimationComplete()
+    private bool IsJumpStartAnimationComplete()
     {
-        return animator.GetCurrentAnimatorStateInfo(0).IsName("Jump") &&
+        return animator.GetCurrentAnimatorStateInfo(0).IsName("JumpStart") &&
+               animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
+    }
+
+    private bool IsJumpFinishAnimationComplete()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName("JumpFinish") &&
                animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
     }
 
     private void SetMoveState(State state)
     {
+        moveState = state;
         animator.SetInteger("MoveState", (int)state);
     }
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnJumpStartAnimationEnds()
     {
-        if (collision.collider.CompareTag("Ground"))
+        animator.SetInteger("MoveState", (int)MoveState.Jump);
+        Debug.Log("Jumping");
+    }
+    private void OnJumpFinishAnimationEnds()
+    {
+        animator.SetInteger("MoveState", (int)MoveState.Idle);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"Trigger Enter with: {other.name}");
+        if (other.CompareTag("Ground"))
         {
             isGrounded = true;
+            Debug.Log("Landed on Ground");
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        if (collision.collider.CompareTag("Ground"))
+        Debug.Log($"Trigger Exit with: {other.name}");
+        if (other.CompareTag("Ground"))
         {
             isGrounded = false;
+            Debug.Log("Left the Ground");
         }
     }
 }
