@@ -66,10 +66,12 @@ public class CharacterScript : MonoBehaviour
         Vector2 moveInput = moveAction.ReadValue<Vector2>();
         if (moveInput.magnitude > 0)
         {
+            Debug.Log("Setting state to Walk");
             SetMoveState(State.Walk);
         }
         else
         {
+            Debug.Log("Setting state to Idle");
             SetMoveState(State.Idle);
         }
     }
@@ -90,6 +92,7 @@ public class CharacterScript : MonoBehaviour
     {
         moveState = state;
         animator.SetInteger("MoveState", (int)state);
+        Debug.Log($"MoveState set to: {state}");
     }
     private void OnJumpStartAnimationEnds()
     {

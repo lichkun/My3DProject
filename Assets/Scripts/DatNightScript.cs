@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DayNightScript : MonoBehaviour
 {
-    private float dayDuration = 15.0f;
+    private float dayDuration = 1000.0f;
     private float dayTime;
     private float rotationAngle;
     private float dawnTime = 4.0f;
