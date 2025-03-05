@@ -59,6 +59,19 @@ public class CharacterScript : MonoBehaviour
         {
             TransitionToIdleOrWalk();
         }
+
+        if (isGrounded && !isJumping && !isFalling)
+        {
+            Vector2 moveInput = moveAction.ReadValue<Vector2>();
+            if (moveInput.magnitude > 0)
+            {
+                SetMoveState(State.Walk);
+            }
+            else
+            {
+                SetMoveState(State.Idle);
+            }
+        }
     }
 
     private void TransitionToIdleOrWalk()
