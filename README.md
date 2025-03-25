@@ -6,13 +6,7 @@
 
 
 
-
-
-
-
-
-https://github.com/user-attachments/assets/f3463ed1-43b1-4c3a-8109-5d49ae5c827f
-
+![image](https://github.com/user-attachments/assets/824f3bb1-1f18-4e00-af72-30f150db28f3)
 
 
 
