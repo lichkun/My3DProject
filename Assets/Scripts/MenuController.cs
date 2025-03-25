@@ -7,12 +7,15 @@ public class MenuController : MonoBehaviour
     private static MenuController instance = null;
     [SerializeField]
     private GameObject menu;
+    [SerializeField]
+    private GameObject music;
     void Start()
     {
         if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(music);
         }
         else
         {
