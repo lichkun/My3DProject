@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DayNightScript : MonoBehaviour
 {
-    private float dayDuration = 1000.0f;
+    private float dayDuration = 100.0f;
     private float dayTime;
     private float rotationAngle;
     private float dawnTime = 4.0f;
@@ -61,7 +61,7 @@ public class DayNightScript : MonoBehaviour
             }
         }
         RenderSettings.ambientIntensity = Mathf.Clamp(coef, minAmbientLight, 1.0f);
-        skybox.SetFloat("_Exposure", coef * maxSkyboxExposure);
+        //skybox.SetFloat("_Exposure", coef * maxSkyboxExposure);
         this.transform.Rotate(0, 0, rotationAngle * Time.deltaTime);
     }
 }
